@@ -16,7 +16,7 @@ class rng():
     def gen(self):
         # generates a random number
         self.term = (((self.a * self.term) + self.c) % self.m)
-        return self.term
+        return self.term/self.m
     def genlist(self,length):
         # returns a list of 'n' random numbers in the range (0,1) where 'n' is 'length'.
         RNs = []
@@ -1068,6 +1068,26 @@ class Gaussian_Quadrature:
             sum+=weightf
         val=(b-a)*0.5*sum
         return val     
+def monte_carlo_integrate(f: float,a: float,b: float,N: int,seed: int,multiplier=1103515245,m=32768,c=12345):
+    '''
+    # Monte Carlo Integration
+    ## Parameters
+    - f: Function to be integrated
+    - a: Lower limit of the integral
+    - b: Upper limit of the integral
+    - N: Number of random numbers to be generated
+    - seed: Seed for the random number generator
+    ## Returns
+    - F: The value of the integral
+    '''
+    p=rng(seed,m=m,c=c,a=multiplier)
+    F=0
+    for i in range(N):
+        k=p.gen()
+        k=((b-a)*(k))+a
+        F+=((b-a)*f(k))/N   
+    return F   
+
 
 
 
